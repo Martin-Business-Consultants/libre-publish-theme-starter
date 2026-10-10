@@ -1,0 +1,14 @@
+<%# locals: (data:) -%>
+<section class="container block">
+  <% if data.heading.present? %><h2><%= data.heading %></h2><% end %>
+  <% if data.body.present? %><div class="muted lead"><%= website_rich_text data.body %></div><% end %>
+  <div class="grid grid--3">
+    <% data.testimonials.each_with_index do |testimonial, index| %>
+      <%# herb:key index %>
+      <blockquote class="card quote">
+        <div class="quote__text"><%= website_rich_text testimonial.quote %></div>
+        <footer class="muted">— <%= testimonial.attribution %></footer>
+      </blockquote>
+    <% end %>
+  </div>
+</section>

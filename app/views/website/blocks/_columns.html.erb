@@ -1,0 +1,7 @@
+<%# locals: (data:) -%>
+<div class="container block grid grid--<%= data.column_count.presence || 2 %>">
+  <% Array(data.to_h["items"]).each_with_index do |block, index| %>
+    <%# herb:key index %>
+    <div><%= website_block(block) %></div>
+  <% end %>
+</div>

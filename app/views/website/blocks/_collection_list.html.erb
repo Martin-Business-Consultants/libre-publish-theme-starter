@@ -1,0 +1,16 @@
+<%# locals: (data:) -%>
+<% entries = Array(data.resolved.to_h["entries"]) %>
+<section class="container block">
+  <% if data.heading.present? %><h2><%= data.heading %></h2><% end %>
+  <% if data.body.present? %><div class="muted lead"><%= website_rich_text data.body %></div><% end %>
+  <div class="grid grid--3">
+    <% entries.each do |entry| %>
+      <%# herb:key entry["id"] %>
+      <a class="card card--link" href="<%= entry["url"] %>">
+        <h3><%= entry["title"] %></h3>
+        <% summary = entry.dig("frontmatter", "excerpt").presence || entry.dig("frontmatter", "summary").presence %>
+        <% if summary %><p class="muted"><%= website_plain_text(summary) %></p><% end %>
+      </a>
+    <% end %>
+  </div>
+</section>

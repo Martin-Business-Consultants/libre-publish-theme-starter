@@ -1,0 +1,5 @@
+<%# locals: (data:) -%>
+<div class="container block block--tight">
+  <% button_classes = class_names("button", "button--secondary": !data.style.to_s.in?(["", "primary"])) %>
+  <a class="<%= button_classes %>" href="<%= website_href(data.url) %>"><%= data.label %></a>
+</div>

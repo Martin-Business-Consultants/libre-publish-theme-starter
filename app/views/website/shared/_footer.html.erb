@@ -1,0 +1,14 @@
+<%# locals: () -%>
+<% settings = website_settings %>
+<footer class="site-footer">
+  <div class="container site-footer__inner">
+    <p><strong><%= settings["title"] %></strong></p>
+    <% if settings["description"].present? %>
+      <p class="muted"><%= settings["description"] %></p>
+    <% end %>
+    <p class="muted">
+      <% if settings["email"].present? %><a href="mailto:<%= settings["email"] %>"><%= settings["email"] %></a><% end %>
+      <% if settings["phone"].present? %> · <%= settings["phone"] %><% end %>
+    </p>
+  </div>
+</footer>

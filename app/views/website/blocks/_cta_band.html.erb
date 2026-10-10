@@ -1,0 +1,8 @@
+<%# locals: (data:) -%>
+<section class="band block">
+  <div class="container band__inner">
+    <h2><%= data.heading %></h2>
+    <% if data.body.present? %><div class="muted"><%= website_rich_text data.body %></div><% end %>
+    <%= render "website/shared/ctas", ctas: data.ctas %>
+  </div>
+</section>

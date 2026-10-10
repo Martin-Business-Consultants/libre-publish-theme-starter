@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="<%= website_settings["default_locale"].presence || "en" %>">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%= stylesheet_link_tag "starter/site" %>
+    <%= website_design_tags %>
+    <%= yield :head %>
+    <link rel="sitemap" href="/sitemap.xml">
+    <%= website_scripts("head") %>
+    <%= website_javascript_tags %>
+  </head>
+  <body>
+    <%= render "website/shared/header" %>
+    <main id="main"><%= yield %></main>
+    <%= render "website/shared/footer" %>
+    <%= website_scripts("body") %>
+  </body>
+</html>

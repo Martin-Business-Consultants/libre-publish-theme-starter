@@ -1,0 +1,10 @@
+<%# locals: (entry:) -%>
+<%# An entry of the posts collection (copy this file as website/entries/<collection>
+    for another collection the site shows). %>
+<% content_for :head, website_seo_tags(entry) %>
+<article class="container container--narrow entry">
+  <p class="muted"><%= entry.published_at&.to_date&.to_fs(:long) %></p>
+  <h1><%= entry.title %></h1>
+  <div class="prose"><%= website_markdown entry.body_markdown %></div>
+  <%= website_blocks entry %>
+</article>
