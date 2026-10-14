@@ -1,16 +1,21 @@
 <!DOCTYPE html>
-<html lang="<%= website_settings["default_locale"].presence || "en" %>">
+<html lang="<%= content_for(:lang).presence || starter_locale %>">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <%= stylesheet_link_tag "starter/site" %>
+    <%# The theme's files come from the theme itself (Starter::AssetsController), not the asset pipeline. %>
+    <link rel="stylesheet" href="<%= starter_asset_path("site.css") %>">
     <%= website_design_tags %>
     <%= yield :head %>
+    <meta name="theme-color" content="<%= website_design(:accent) %>">
+    <link rel="icon" href="<%= starter_favicon_href %>">
+    <link rel="manifest" href="/site.webmanifest">
     <link rel="sitemap" href="/sitemap.xml">
     <%= website_scripts("head") %>
-    <%= website_javascript_tags %>
+    <%= starter_javascript_tags %>
   </head>
   <body>
+    <a class="skip-link" href="#main">Skip to content</a>
     <%= render "website/shared/header" %>
     <main id="main"><%= yield %></main>
     <%= render "website/shared/footer" %>

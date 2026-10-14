@@ -2,22 +2,31 @@
 
 module Starter
   # A theme is an engine like a plugin: its views and helpers join the app's,
-  # its assets join Propshaft's load path (app/assets/*/starter), and it
-  # registers with Website, which turns the public site on. Its scripts get an
-  # importmap of their own (config/importmap.rb), so the admin's never reach a
+  # and it registers with Website, which turns the public site on. Its files
+  # are served by the theme itself (Starter::AssetsController), so it works
+  # however it was installed; its scripts get an importmap of their own
+  # (the theme helper's starter_javascript_tags), so the admin's never reach a
   # visitor.
   class Engine < ::Rails::Engine
-    initializer "starter.assets", before: "importmap" do |app|
-      app.config.assets.paths << root.join("app/javascript")
+    # The theme's files, ahead of the website's catch-all.
+    initializer "starter.routes" do |app|
+      app.routes.append do
+        get "_starter/*path", to: "starter/assets#show", format: false, as: :starter_asset
+      end
     end
 
     config.to_prepare do
+      # A plugin too, so Settings › Plugins installs it from its GitHub
+      # release, updates it, and switches the site on and off.
       Cms::Plugins.register :starter, name: "Starter", version: Starter::VERSION,
-        description: "The website, drawn from the CMS's content.", author: "You",
-        enabled_by_default: true, requires: ">= 1.14"
+        description: "The website, drawn from the CMS's content: switch it off and the CMS is headless.",
+        author: "You", enabled_by_default: true, requires: ">= 1.33",
+        homepage: "https://github.com/Martin-Business-Consultants/#{"starter".tr("_", "-")}-theme"
+      # Block types the theme draws beyond the core's, installed the first
+      # time it's switched on (an existing block type is left as it is).
+      Cms::Plugins.block_types :starter, Starter::BLOCK_TYPES
       Website.register :starter, name: "Starter", version: Starter::VERSION,
         views: Starter::Engine.root.join("app/views"),
-        importmap: Importmap::Map.new.draw(Starter::Engine.root.join("config/importmap.rb")),
         # What an editor can change in Settings › Themes › Customize; the
         # stylesheet reads them as --design-accent and the rest.
         design: [

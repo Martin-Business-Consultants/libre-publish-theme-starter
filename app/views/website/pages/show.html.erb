@@ -1,8 +1,9 @@
 <%# locals: (page:) -%>
-<%# A page: its blocks, top to bottom. A page whose first block isn't a hero
-    gets its title as a heading. %>
-<% content_for :head, website_seo_tags(page) %>
-<% unless Array(page.blocks).first.to_h["type"] == "hero" %>
+<%# A page: its blocks, top to bottom. A page that doesn't open with a hero
+    (a synced pattern's first block counts) gets its title as its heading. %>
+<% content_for :head, starter_seo_tags(page) %>
+<% content_for :lang, starter_locale(page) %>
+<% unless Array(page.expanded_blocks(live: !previewing?)).first.to_h["type"].to_s.end_with?("hero") %>
   <div class="container page-title"><h1><%= page.title %></h1></div>
 <% end %>
 <%= website_blocks page %>

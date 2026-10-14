@@ -1,6 +1,13 @@
 <%# locals: () -%>
-<% content_for :head, website_seo_tags(title: "Not found", noindex: true) %>
-<div class="container page-title">
-  <h1>Not found</h1>
-  <p class="muted">There's nothing here. <a href="/">Back to the home page</a>.</p>
-</div>
+<%# The 404. A site that has a page for it (slug "404" from the Not Found
+    template, or "not-found") shows that page's blocks; otherwise this. %>
+<% page = Page.live.find_by(slug: %w[404 not-found]) %>
+<% content_for :head, starter_seo_tags(title: "Not found | #{starter_name}", noindex: true) %>
+<% if page && Array(page.blocks).any? %>
+  <%= website_blocks page %>
+<% else %>
+  <div class="container page-title">
+    <h1><%= page&.title.presence || "Not found" %></h1>
+    <p class="muted">There's nothing here. <a href="/">Back to the home page</a>.</p>
+  </div>
+<% end %>

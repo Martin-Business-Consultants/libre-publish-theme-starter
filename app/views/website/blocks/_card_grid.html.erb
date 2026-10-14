@@ -2,7 +2,8 @@
 <section class="container block">
   <% if data.heading.present? %><h2><%= data.heading %></h2><% end %>
   <% if data.body.present? %><div class="muted lead"><%= website_rich_text data.body %></div><% end %>
-  <div class="grid grid--<%= data.columns.presence || 3 %>">
+  <% cols = data.columns.presence || "3" %>
+  <div class="<%= class_names("grid", "grid--2": cols == "2", "grid--3": cols == "3", "grid--4": cols == "4") %>">
     <% data.cards.each_with_index do |card, index| %>
       <%# herb:key index %>
       <div class="card">
@@ -10,7 +11,7 @@
         <h3><%= card.title %></h3>
         <% if card.subtitle.present? %><p class="muted"><%= card.subtitle %></p><% end %>
         <div class="muted"><%= website_rich_text card.description %></div>
-        <% if (href = website_href(card.link_url)) %><a href="<%= href %>"><%= card.link_label.presence || "Learn more" %> →</a><% end %>
+        <% if (href = starter_href(card.link_url)) %><a href="<%= href %>"><%= card.link_label.presence || "Learn more" %> →</a><% end %>
       </div>
     <% end %>
   </div>

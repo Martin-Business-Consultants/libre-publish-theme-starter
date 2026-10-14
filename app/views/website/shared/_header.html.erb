@@ -1,15 +1,23 @@
 <%# locals: () -%>
-<%# The site's name and its top-level pages. %>
-<% pages = Page.live.where(parent_id: nil).where.not(path: "home").order(:title).limit(6) %>
+<%# The site's name (or Settings › Branding's logo) and the nav global's items. %>
+<% items = Array(starter_global(:nav)&.items).filter_map { |item| [item.label, starter_href(item.link)] if item.label.present? } %>
 <header class="site-header">
   <div class="container site-header__inner">
-    <a class="site-header__brand" href="/"><%= website_settings["title"].presence || "Home" %></a>
-    <button class="site-header__toggle" type="button" aria-controls="site-nav" aria-expanded="false">Menu</button>
-    <nav id="site-nav" class="site-header__nav" aria-label="Main">
-      <% pages.each do |page| %>
-        <%# herb:key page.id %>
-        <a href="<%= website_path(page) %>"><%= page.title %></a>
+    <a class="site-header__brand" href="/">
+      <% if starter_logo_id %>
+        <%= website_image_tag starter_logo_id, alt: starter_name, sizes: "12rem", loading: :eager, class: "site-header__logo" %>
+      <% else %>
+        <%= starter_name %>
       <% end %>
-    </nav>
+    </a>
+    <% if items.any? %>
+      <button class="site-header__toggle" type="button" aria-controls="site-nav" aria-expanded="false">Menu</button>
+      <nav id="site-nav" class="site-header__nav" aria-label="Main">
+        <% items.each_with_index do |(label, href), index| %>
+          <%# herb:key index %>
+          <%= link_to label, href, aria: {current: (request.path == href ? "page" : nil)} %>
+        <% end %>
+      </nav>
+    <% end %>
   </div>
 </header>

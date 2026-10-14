@@ -1,14 +1,30 @@
 <%# locals: () -%>
+<%# The footer global's columns, address and copyright, and Settings › General's contact details. %>
+<% footer = starter_global(:footer) %>
 <% settings = website_settings %>
 <footer class="site-footer">
   <div class="container site-footer__inner">
-    <p><strong><%= settings["title"] %></strong></p>
-    <% if settings["description"].present? %>
-      <p class="muted"><%= settings["description"] %></p>
+    <div>
+      <p><strong><%= starter_name %></strong></p>
+      <% if settings["description"].present? %><p class="muted"><%= settings["description"] %></p><% end %>
+      <% if footer&.address.present? %><address class="muted"><%= simple_format(footer.address, {}, wrapper_tag: "span") %></address><% end %>
+      <p class="muted">
+        <% if settings["email"].present? %><%= mail_to settings["email"] %><% end %>
+        <% if (tel = starter_tel) %> · <%= link_to settings["phone"], tel %><% end %>
+      </p>
+    </div>
+    <% Array(footer&.columns).each_with_index do |column, index| %>
+      <%# herb:key index %>
+      <nav aria-label="<%= column.heading.presence || "Footer" %>">
+        <% if column.heading.present? %><p><strong><%= column.heading %></strong></p><% end %>
+        <ul>
+          <% Array(column.items).each_with_index do |item, row| %>
+            <%# herb:key row %>
+            <li><%= starter_link_to item.label, starter_href(item.link) %></li>
+          <% end %>
+        </ul>
+      </nav>
     <% end %>
-    <p class="muted">
-      <% if settings["email"].present? %><a href="mailto:<%= settings["email"] %>"><%= settings["email"] %></a><% end %>
-      <% if settings["phone"].present? %> · <%= settings["phone"] %><% end %>
-    </p>
   </div>
+  <p class="container muted site-footer__copyright"><%= footer&.copyright.presence || "© #{starter_year} #{starter_name}" %></p>
 </footer>

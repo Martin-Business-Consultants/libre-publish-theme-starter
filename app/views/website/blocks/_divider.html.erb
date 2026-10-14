@@ -1,2 +1,2 @@
 <%# locals: (data:) -%>
-<hr class="container divider">
+<hr class="<%= class_names("container divider", "divider--dashed": data.style == "dashed", "divider--dotted": data.style == "dotted") %>">

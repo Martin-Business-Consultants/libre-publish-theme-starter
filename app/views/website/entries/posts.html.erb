@@ -1,9 +1,12 @@
 <%# locals: (entry:) -%>
-<%# An entry of the posts collection (copy this file as website/entries/<collection>
-    for another collection the site shows). %>
-<% content_for :head, website_seo_tags(entry) %>
+<%# An entry of the posts collection. Copy this file as
+    website/entries/<collection> for each collection the site shows; one
+    without a template has no pages (its entries are a 404, and lists don't
+    link them). %>
+<% content_for :head, starter_seo_tags(entry) %>
+<% content_for :lang, starter_locale(entry) %>
 <article class="container container--narrow entry">
-  <p class="muted"><%= entry.published_at&.to_date&.to_fs(:long) %></p>
+  <% if entry.published_at %><p class="muted"><time datetime="<%= entry.published_at.iso8601 %>"><%= entry.published_at.to_date.to_fs(:long) %></time></p><% end %>
   <h1><%= entry.title %></h1>
   <div class="prose"><%= website_markdown entry.body_markdown %></div>
   <%= website_blocks entry %>
